@@ -1,0 +1,17 @@
+<nav class="bg-primary text-white border-b border-gray-200">
+    <div class="max-w-screen-xl flex items-center justify-between mx-auto p-4">
+      <a routerLink="/" class="text-2xl font-bold">IDWM Tienda</a>
+      <ul class="flex space-x-6">
+        <li><a routerLink="/products" class="hover:text-secondary">Productos</a></li>
+        <li><a routerLink="/cart" class="hover:text-secondary">Carrito</a></li>
+        <ng-container *ngIf="isAuthenticated; else guestLinks">
+          <span>Hola, {{ username }}</span>
+          <button (click)="logout()" class="bg-secondary text-white px-4 py-2 rounded">Cerrar Sesión</button>
+        </ng-container>
+        <ng-template #guestLinks>
+          <li><a routerLink="/auth/login" class="hover:text-secondary">Iniciar Sesión</a></li>
+        </ng-template>
+      </ul>
+    </div>
+  </nav>
+  

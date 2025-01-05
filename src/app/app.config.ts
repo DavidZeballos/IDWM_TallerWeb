@@ -6,3 +6,8 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes)]
 };
+
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:5023/api',
+};
