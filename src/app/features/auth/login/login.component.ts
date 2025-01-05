@@ -27,8 +27,11 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
-        next: () => this.router.navigate(['/products']),
-        error: (err) => alert('Error: ' + err.error),
+        next: () => {
+          alert('Inicio de sesión exitoso.');
+          this.router.navigate(['/products']);
+        },
+        error: (err) => alert(`Error al iniciar sesión: ${err.error}`),
       });
     }
   }
