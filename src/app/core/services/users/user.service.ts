@@ -31,4 +31,14 @@ export class UserService {
       })
     );
   }
+
+  changePassword(data: { currentPassword: string; newPassword: string; confirmPassword: string }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/Account/ChangePassword`, data, { responseType: 'text' }).pipe(
+      tap(() => console.log('Contraseña cambiada exitosamente')),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error al cambiar la contraseña:', error);
+        return throwError(() => new Error('Error al cambiar la contraseña.'));
+      })
+    );
+  }
 }

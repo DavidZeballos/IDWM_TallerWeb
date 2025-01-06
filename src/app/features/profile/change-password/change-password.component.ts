@@ -1,27 +1,60 @@
 import { Component } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../../../core/services/users/user.service';
 
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './change-password.component.html',
 })
 export class ChangePasswordComponent {
   passwordForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-    this.passwordForm = this.fb.group({
-      currentPassword: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required],
-    });
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private toastr: ToastrService
+  ) {
+    this.passwordForm = this.fb.group(
+      {
+        currentPassword: ['', [Validators.required]],
+        newPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/),
+          ],
+        ],
+        confirmPassword: ['', [Validators.required]],
+      },
+      { validators: this.passwordMatchValidator }
+    );
   }
 
-  changePassword(): void {
-    if (this.passwordForm.valid) {
-      console.log('Password changed successfully:', this.passwordForm.value);
+  passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
+    const newPassword = group.get('newPassword')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    return newPassword === confirmPassword ? null : { passwordMismatch: true };
+  }
+
+  onSubmit(): void {
+    if (this.passwordForm.invalid) {
+      this.toastr.error('Por favor, complete correctamente todos los campos.');
+      return;
     }
+
+    this.userService.changePassword(this.passwordForm.value).subscribe({
+      next: () => {
+        this.toastr.success('Contraseña cambiada exitosamente.');
+        this.passwordForm.reset();
+      },
+      error: (err) => {
+        const errorMessage = err.error || 'Error al cambiar la contraseña.';
+        this.toastr.error(errorMessage);
+      },
+    });
   }
 }
