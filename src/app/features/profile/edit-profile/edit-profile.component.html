@@ -1,0 +1,94 @@
+<div class="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
+  <h2 class="text-2xl font-bold mb-4 text-center">Editar Perfil</h2>
+  <form [formGroup]="profileForm" class="space-y-6">
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">Nombre</label>
+      <input
+        type="text"
+        formControlName="name"
+        [readonly]="!isEditing['name']"
+        class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        [class.bg-gray-200]="!isEditing['name']"
+      />
+      <div class="mt-2 flex justify-end">
+        <button
+          *ngIf="!isEditing['name']"
+          type="button"
+          (click)="enableEdit('name')"
+          class="text-blue-500 hover:text-blue-700"
+        >
+          Editar
+        </button>
+        <button
+          *ngIf="isEditing['name']"
+          type="button"
+          (click)="saveField('name')"
+          class="text-green-500 hover:text-green-700"
+        >
+          Guardar
+        </button>
+      </div>
+    </div>
+
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
+      <input
+        type="date"
+        formControlName="dateOfBirth"
+        [readonly]="!isEditing['dateOfBirth']"
+        class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        [class.bg-gray-200]="!isEditing['dateOfBirth']"
+      />
+      <div class="mt-2 flex justify-end">
+        <button
+          *ngIf="!isEditing['dateOfBirth']"
+          type="button"
+          (click)="enableEdit('dateOfBirth')"
+          class="text-blue-500 hover:text-blue-700"
+        >
+          Editar
+        </button>
+        <button
+          *ngIf="isEditing['dateOfBirth']"
+          type="button"
+          (click)="saveField('dateOfBirth')"
+          class="text-green-500 hover:text-green-700"
+        >
+          Guardar
+        </button>
+      </div>
+    </div>
+
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">Género</label>
+      <select
+        formControlName="gender"
+        [disabled]="!isEditing['gender']"
+        class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        [class.bg-gray-200]="!isEditing['gender']"
+      >
+        <option value="Masculino">Masculino</option>
+        <option value="Femenino">Femenino</option>
+        <option value="Otro">Otro</option>
+      </select>
+      <div class="mt-2 flex justify-end">
+        <button
+          *ngIf="!isEditing['gender']"
+          type="button"
+          (click)="enableEdit('gender')"
+          class="text-blue-500 hover:text-blue-700"
+        >
+          Editar
+        </button>
+        <button
+          *ngIf="isEditing['gender']"
+          type="button"
+          (click)="saveField('gender')"
+          class="text-green-500 hover:text-green-700"
+        >
+          Guardar
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

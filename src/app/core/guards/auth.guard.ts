@@ -1,24 +1,16 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { CanActivateFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+export const authGuard: CanActivateFn = (route, state) => {
+  const router = inject(Router);
+  const token = localStorage.getItem('token');
+  console.log('Token en AuthGuard:', token);
 
-  canActivate(): Observable<boolean> {
-    return this.authService.isAuthenticated$.pipe(
-      map((isAuthenticated) => {
-        if (!isAuthenticated) {
-          this.router.navigate(['/auth/login']);
-          return false;
-        }
-        return true;
-      })
-    );
+  if (token) {
+    return true;
   }
-}
+
+  console.warn('Token no encontrado en AuthGuard. Redirigiendo al login.');
+  router.navigate(['/auth/login']);
+  return false;
+};

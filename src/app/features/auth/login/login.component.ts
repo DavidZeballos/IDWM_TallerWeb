@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
@@ -16,7 +17,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -28,10 +30,13 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: () => {
-          alert('Inicio de sesión exitoso.');
-          this.router.navigate(['/products']);
+          this.toastr.success('Inicio de sesión exitoso', 'Éxito');
+          this.router.navigate(['/profile/edit']);
         },
-        error: (err) => alert(`Error al iniciar sesión: ${err.error}`),
+        error: (err: any) => {
+          this.toastr.error('Credenciales inválidas. Intente nuevamente.', 'Error');
+          console.error(err);
+        },
       });
     }
   }

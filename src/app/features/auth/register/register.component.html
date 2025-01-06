@@ -1,44 +1,52 @@
 <div class="max-w-md mx-auto mt-10">
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="bg-white p-6 shadow-md rounded">
-      <h2 class="text-2xl font-bold mb-4">Registrarse</h2>
-      <div class="mb-4">
-        <label class="block text-sm font-medium">Nombre Completo</label>
-        <input type="text" formControlName="userName" class="border rounded w-full p-2">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="bg-white p-6 shadow-md rounded">
+    <h2 class="text-2xl font-bold mb-4">Registro</h2>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium">Nombre de Usuario</label>
+      <input type="text" formControlName="userName" class="border rounded w-full p-2">
+      <div *ngIf="registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched" class="text-red-500 text-sm">
+        El nombre de usuario es obligatorio.
       </div>
-      <div class="mb-4">
-        <label class="block text-sm font-medium">Correo Electrónico</label>
-        <input type="email" formControlName="email" class="border rounded w-full p-2">
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium">Correo Electrónico</label>
+      <input type="email" formControlName="email" class="border rounded w-full p-2">
+      <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-red-500 text-sm">
+        Ingrese un correo electrónico válido.
       </div>
-      <div class="mb-4">
-        <label class="block text-sm font-medium">Contraseña</label>
-        <input type="password" formControlName="password" class="border rounded w-full p-2">
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium">Contraseña</label>
+      <input type="password" formControlName="password" class="border rounded w-full p-2">
+      <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-red-500 text-sm">
+        La contraseña debe tener al menos 8 caracteres.
       </div>
-      <div class="mb-4">
-        <label class="block text-sm font-medium">Confirmar Contraseña</label>
-        <input type="password" formControlName="confirmPassword" class="border rounded w-full p-2">
-        <div *ngIf="registerForm.errors?.['mismatch']" class="text-red-500 text-sm">
-          Las contraseñas no coinciden.
-        </div>
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium">Confirmar Contraseña</label>
+      <input type="password" formControlName="confirmPassword" class="border rounded w-full p-2">
+      <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="text-red-500 text-sm">
+        La confirmación de contraseña es obligatoria.
       </div>
-      <div class="mb-4">
-        <label class="block text-sm font-medium">RUT</label>
-        <input type="text" formControlName="rut" class="border rounded w-full p-2">
-      </div>
-      <div class="mb-4">
-        <label class="block text-sm font-medium">Fecha de Nacimiento</label>
-        <input type="date" formControlName="dateOfBirth" class="border rounded w-full p-2">
-      </div>
-      <div class="mb-4">
-        <label class="block text-sm font-medium">Género</label>
-        <select formControlName="gender" class="border rounded w-full p-2">
-          <option value="">Seleccione</option>
-          <option value="Masculino">Masculino</option>
-          <option value="Femenino">Femenino</option>
-          <option value="Otro">Otro</option>
-          <option value="Prefiero no decirlo">Prefiero no decirlo</option>
-        </select>
-      </div>
-      <button type="submit" class="bg-primary text-white w-full py-2 rounded">Registrarse</button>
-    </form>
-  </div>
-  
+    </div>
+
+    <div *ngIf="registerForm.get('password')?.value !== registerForm.get('confirmPassword')?.value && registerForm.get('confirmPassword')?.touched" class="text-red-500 text-sm">
+      Las contraseñas no coinciden.
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="registerForm.invalid"
+      [ngClass]="{
+        'bg-gray-300 text-gray-700 cursor-not-allowed': registerForm.invalid,
+        'bg-primary text-white hover:bg-primary-dark': !registerForm.invalid
+      }"
+      class="w-full py-2 px-4 rounded-md text-sm font-semibold shadow-md transition-all">
+      Registrarse
+    </button>
+  </form>
+</div>

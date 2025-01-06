@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -17,33 +17,32 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.registerForm = this.fb.group({
-      userName: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(255)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required]],
+      userName: ['', [Validators.required]],
       rut: ['', [Validators.required]],
       dateOfBirth: ['', [Validators.required]],
       gender: ['', [Validators.required]],
-    }, { validators: this.passwordsMatch });
-  }
-
-  passwordsMatch(form: FormGroup): { [key: string]: boolean } | null {
-    const password = form.get('password')?.value;
-    const confirmPassword = form.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
+    });
   }
 
   onSubmit(): void {
     if (this.registerForm.valid) {
       this.authService.register(this.registerForm.value).subscribe({
         next: () => {
-          alert('Registro exitoso. Por favor, inicie sesión.');
+          this.toastr.success('Registro exitoso. Redirigiendo al login...', 'Éxito');
           this.router.navigate(['/auth/login']);
         },
-        error: (err) => alert(`Error al registrarse: ${err.error}`),
+        error: (err: any) => {
+          const errorMessage =
+            err.error?.message || 'No se pudo completar el registro. Intente nuevamente.';
+          this.toastr.error(errorMessage, 'Error');
+        },
       });
     }
   }
