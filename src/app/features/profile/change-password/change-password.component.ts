@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../core/services/users/user.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-change-password',
@@ -10,13 +12,15 @@ import { UserService } from '../../../core/services/users/user.service';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './change-password.component.html',
 })
-export class ChangePasswordComponent {
+export class ChangePasswordComponent implements OnInit {
   passwordForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.passwordForm = this.fb.group(
       {
@@ -32,6 +36,14 @@ export class ChangePasswordComponent {
       },
       { validators: this.passwordMatchValidator }
     );
+  }
+
+  ngOnInit(): void {
+    const token = this.authService.getToken();
+    if (!token) {
+      this.toastr.warning('Debes iniciar sesión primero.');
+      this.router.navigate(['/auth/login']);
+    }
   }
 
   passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {

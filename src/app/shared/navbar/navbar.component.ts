@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { ToastrService } from 'ngx-toastr';
@@ -11,8 +11,9 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
 })
-export class NavbarComponent {
-  isAuthenticated = false;
+export class NavbarComponent implements OnInit {
+  isAuthenticated: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -23,6 +24,12 @@ export class NavbarComponent {
   ngOnInit(): void {
     this.authService.isAuthenticated$.subscribe((authStatus: boolean) => {
       this.isAuthenticated = authStatus;
+      if (authStatus) {
+        const role = this.authService.getRole();
+        this.isAdmin = role === 'Admin';
+      } else {
+        this.isAdmin = false;
+      }
     });
   }
 

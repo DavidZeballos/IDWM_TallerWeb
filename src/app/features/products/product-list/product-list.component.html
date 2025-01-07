@@ -30,7 +30,7 @@
         class="mb-2 w-full h-40 object-cover rounded-md"
       />
       <h2 class="text-lg font-semibold truncate">{{ product.name }}</h2>
-      <p class="text-gray-600">{{ product.typeName }}</p>
+      <p class="text-gray-600">{{ product.productTypeName  }}</p>
       <p class="font-bold text-green-500">{{ product.price | currency:'USD' }}</p>
       <button
         (click)="addToCart(product)"

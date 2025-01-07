@@ -1,0 +1,37 @@
+<div class="p-6">
+  <h2 class="text-2xl font-bold mb-4">Editar Usuario</h2>
+  <form [formGroup]="userForm" (ngSubmit)="saveChanges()" class="space-y-4">
+    <div>
+      <label for="name" class="block font-medium">Nombre</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        class="border p-2 rounded-md w-full"
+      />
+    </div>
+    <div>
+      <label for="gender" class="block font-medium">Género</label>
+      <select
+        id="gender"
+        formControlName="gender"
+        class="border p-2 rounded-md w-full"
+      >
+        <option value="Masculino">Masculino</option>
+        <option value="Femenino">Femenino</option>
+      </select>
+    </div>
+    <div>
+      <label for="dateOfBirth" class="block font-medium">Fecha de Nacimiento</label>
+      <input
+        id="dateOfBirth"
+        type="date"
+        formControlName="dateOfBirth"
+        class="border p-2 rounded-md w-full"
+      />
+    </div>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">
+      Guardar Cambios
+    </button>
+  </form>
+</div>

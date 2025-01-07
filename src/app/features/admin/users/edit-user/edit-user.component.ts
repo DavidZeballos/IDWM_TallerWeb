@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { UserService } from '../../../core/services/users/user.service';
-import { AuthService } from '../../../core/services/auth/auth.service';
+import { UserService } from '../../../../core/services/users/user.service';
+import { AuthService } from '../../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -35,34 +35,26 @@ export class EditProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const token = this.authService.getToken();
-    if (!token) {
+    if (!this.authService.getToken()) {
       this.toastr.warning('Debes iniciar sesión primero.');
       this.router.navigate(['/auth/login']);
       return;
     }
-
     this.loadProfile();
   }
 
   loadProfile(): void {
-    console.log('[EditProfileComponent] Solicitando perfil del usuario...');
     this.userService.getProfile().subscribe({
-      next: (user: any) => {
-        if (user) {
-          console.log('[EditProfileComponent] Perfil cargado exitosamente:', user);
-          this.profileForm.patchValue({
-            name: user.userName || '',
-            dateOfBirth: user.dateOfBirth ? user.dateOfBirth.split('T')[0] : '',
-            gender: user.gender || '',
-          });
-        } else {
-          console.warn('[EditProfileComponent] Perfil vacío o nulo.');
-          this.toastr.error('No se encontraron datos de perfil.');
-        }
+      next: (profile: any) => {
+        console.log('Datos del perfil:', profile);
+        this.profileForm.patchValue({
+          name: profile.userName,
+          dateOfBirth: profile.dateOfBirth?.split('T')[0],
+          gender: profile.gender,
+        });
       },
       error: (err) => {
-        console.error('[EditProfileComponent] Error al cargar el perfil:', err);
+        console.error('Error al cargar el perfil:', err);
         this.toastr.error('Error al cargar el perfil.', 'Error');
       },
     });
@@ -88,8 +80,8 @@ export class EditProfileComponent implements OnInit {
         this.toastr.success(`${field} actualizado correctamente`);
       },
       error: (err) => {
-        console.error(`[EditProfileComponent] Error al actualizar ${field}:`, err);
-        this.toastr.error(`Error al actualizar ${field}`);
+        console.error(`Error al actualizar ${field}:`, err);
+        this.toastr.error(`Error al actualizar ${field}`, 'Error');
       },
     });
   }
