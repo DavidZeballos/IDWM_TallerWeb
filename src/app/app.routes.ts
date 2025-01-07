@@ -36,6 +36,12 @@ export const routes: Routes = [
       ),
     canActivate: [authGuard],
   },
+  // Carrito
+  {
+    path: 'cart',
+    loadComponent: () =>
+      import('./features/cart/cart.component').then((m) => m.CartComponent),
+  },
   // Vistas de administración protegidas
   {
     path: 'admin/products/list',

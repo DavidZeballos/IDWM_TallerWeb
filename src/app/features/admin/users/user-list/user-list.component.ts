@@ -4,7 +4,6 @@ import { UserService } from '../../../../core/services/users/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-user-list',
   standalone: true,
@@ -13,6 +12,10 @@ import { CommonModule } from '@angular/common';
 })
 export class UserListComponent implements OnInit {
   users: any[] = [];
+  paginatedUsers: any[] = [];
+  currentPage: number = 1;
+  pageSize: number = 5;
+  totalPages: number = 0;
 
   constructor(
     private userService: UserService,
@@ -26,14 +29,13 @@ export class UserListComponent implements OnInit {
 
   loadUsers(): void {
     this.userService.getUsers({}).subscribe({
-      next: (data) => (this.users = data),
+      next: (data) => {
+        this.users = data;
+        this.updatePagination();
+      },
       error: (err) =>
         this.toastr.error('Error al cargar usuarios: ' + err.message),
     });
-  }
-
-  editUser(userId: string): void {
-    this.router.navigate([`/admin/users/edit/${userId}`]);
   }
 
   toggleStatus(userId: string): void {
@@ -50,7 +52,16 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  navigateToCreateUser(): void {
-    this.router.navigate(['/admin/users/create']);
+  updatePagination(): void {
+    this.totalPages = Math.ceil(this.users.length / this.pageSize);
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedUsers = this.users.slice(start, end);
+  }
+
+  changePage(newPage: number): void {
+    if (newPage < 1 || newPage > this.totalPages) return;
+    this.currentPage = newPage;
+    this.updatePagination();
   }
 }

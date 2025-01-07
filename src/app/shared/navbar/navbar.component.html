@@ -1,15 +1,37 @@
-<nav class="bg-primary text-white p-4 flex justify-between items-center">
-  <a class="text-xl font-bold" routerLink="/">IDWM Store</a>
-  <div class="flex space-x-4">
-    <!-- Botón Lista de Productos -->
-    <button
-      routerLink="/products"
-      class="px-4 py-2 rounded-md bg-gradient-to-r from-teal-400/90 to-teal-300/90 hover:from-teal-500 hover:to-teal-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
-    >
-      Productos
-    </button>
+<nav class="bg-primary text-white p-4 flex items-center justify-between">
+  <!-- Logo y carrito -->
+  <div class="flex items-center space-x-6">
+    <!-- Logo -->
+    <a class="text-2xl font-bold" routerLink="/">IDWM Store</a>
 
-    <!-- Opciones de administrador -->
+    <!-- Carrito -->
+    <button
+      routerLink="/cart"
+      class="relative px-5 py-4 rounded-md bg-gradient-to-r from-gray-400/90 to-gray-300/90 hover:from-gray-500 hover:to-gray-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
+    >
+      🛒
+      <span
+        class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full px-2"
+        *ngIf="cartItemCount > 0"
+      >
+        {{ cartItemCount }}
+      </span>
+    </button>
+  </div>
+
+  <!-- Navegación principal -->
+  <div class="flex space-x-8">
+    <!-- Grupo: Opciones generales -->
+    <div class="flex space-x-4">
+      <button
+        routerLink="/products"
+        class="px-4 py-2 rounded-md bg-gradient-to-r from-teal-400/90 to-teal-300/90 hover:from-teal-500 hover:to-teal-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
+      >
+        Productos
+      </button>
+    </div>
+
+    <!-- Grupo: Opciones de administrador -->
     <div *ngIf="isAuthenticated && isAdmin" class="flex space-x-4">
       <button
         routerLink="/admin/products/create"
@@ -18,7 +40,7 @@
         Añadir Producto
       </button>
       <button
-        routerLink="/admin/products/manage"
+        routerLink="/admin/products/list"
         class="px-4 py-2 rounded-md bg-gradient-to-r from-green-400/90 to-green-300/90 hover:from-green-500 hover:to-green-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
       >
         Gestionar Productos
@@ -31,46 +53,42 @@
       </button>
     </div>
 
-    <!-- Botones de perfil -->
-    <button
-      *ngIf="isAuthenticated"
-      routerLink="/profile/edit"
-      class="px-4 py-2 rounded-md bg-gradient-to-r from-blue-400/90 to-blue-300/90 hover:from-blue-500 hover:to-blue-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
-    >
-      Editar Perfil
-    </button>
+    <!-- Grupo: Opciones de usuario -->
+    <div class="flex space-x-4" *ngIf="isAuthenticated">
+      <button
+        routerLink="/profile/edit"
+        class="px-4 py-2 rounded-md bg-gradient-to-r from-blue-400/90 to-blue-300/90 hover:from-blue-500 hover:to-blue-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
+      >
+        Editar Perfil
+      </button>
+      <button
+        routerLink="/profile/change-password"
+        class="px-4 py-2 rounded-md bg-gradient-to-r from-purple-400/90 to-purple-300/90 hover:from-purple-500 hover:to-purple-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
+      >
+        Cambiar Contraseña
+      </button>
+      <button
+        (click)="logout()"
+        class="px-4 py-2 rounded-md bg-gradient-to-r from-red-400/90 to-red-300/90 hover:from-red-500 hover:to-red-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
+      >
+        Cerrar Sesión
+      </button>
+    </div>
 
-    <button
-      *ngIf="isAuthenticated"
-      routerLink="/profile/change-password"
-      class="px-4 py-2 rounded-md bg-gradient-to-r from-purple-400/90 to-purple-300/90 hover:from-purple-500 hover:to-purple-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
-    >
-      Cambiar Contraseña
-    </button>
-
-    <!-- Botón Cerrar Sesión -->
-    <button
-      *ngIf="isAuthenticated"
-      (click)="logout()"
-      class="px-4 py-2 rounded-md bg-gradient-to-r from-red-400/90 to-red-300/90 hover:from-red-500 hover:to-red-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
-    >
-      Cerrar Sesión
-    </button>
-
-    <!-- Botones de Login y Register -->
-    <button
-      *ngIf="!isAuthenticated"
-      routerLink="/auth/login"
-      class="px-4 py-2 rounded-md bg-gradient-to-r from-green-400/90 to-green-300/90 hover:from-green-500 hover:to-green-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
-    >
-      Iniciar Sesión
-    </button>
-    <button
-      *ngIf="!isAuthenticated"
-      routerLink="/auth/register"
-      class="px-4 py-2 rounded-md bg-gradient-to-r from-yellow-400/90 to-yellow-300/90 hover:from-yellow-500 hover:to-yellow-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
-    >
-      Registrarse
-    </button>
+    <!-- Grupo: Autenticación -->
+    <div class="flex space-x-4" *ngIf="!isAuthenticated">
+      <button
+        routerLink="/auth/login"
+        class="px-4 py-2 rounded-md bg-gradient-to-r from-green-400/90 to-green-300/90 hover:from-green-500 hover:to-green-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
+      >
+        Iniciar Sesión
+      </button>
+      <button
+        routerLink="/auth/register"
+        class="px-4 py-2 rounded-md bg-gradient-to-r from-yellow-400/90 to-yellow-300/90 hover:from-yellow-500 hover:to-yellow-400 text-white shadow-md text-sm font-semibold tracking-wide transition-all"
+      >
+        Registrarse
+      </button>
+    </div>
   </div>
 </nav>

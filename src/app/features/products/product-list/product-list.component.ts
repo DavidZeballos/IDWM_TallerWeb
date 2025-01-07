@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../../core/services/products/product.service';
 import { Product } from '../../../core/models/product.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './product-list.component.html',
 })
 export class ProductListComponent implements OnInit {
@@ -64,7 +65,28 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(product: Product): void {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    
+    // Buscar el producto en el carrito por su ID
+    const existingProductIndex = cart.findIndex((item: any) => item.productId === product.id);
+  
+    if (existingProductIndex > -1) {
+      // Incrementar la cantidad si el producto ya existe
+      cart[existingProductIndex].quantity += 1;
+    } else {
+      // Añadir el producto al carrito si no existe
+      cart.push({
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+      });
+    }
+  
+    localStorage.setItem('cart', JSON.stringify(cart));
     console.log('Producto agregado al carrito:', product);
-    // Lógica para agregar al carrito
+    window.dispatchEvent(new Event('cartUpdated')); // Notificar actualización al navbar
   }
+  
+  
 }

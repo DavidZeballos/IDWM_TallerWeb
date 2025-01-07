@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
 export class NavbarComponent implements OnInit {
   isAuthenticated: boolean = false;
   isAdmin: boolean = false;
+  cartItemCount: number = 0;
 
   constructor(
     private authService: AuthService,
@@ -31,6 +32,18 @@ export class NavbarComponent implements OnInit {
         this.isAdmin = false;
       }
     });
+
+    this.updateCartCount();
+
+    // Escuchar eventos globales para actualizar el contador del carrito
+    window.addEventListener('cartUpdated', () => {
+      this.updateCartCount();
+    });
+  }
+
+  updateCartCount(): void {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    this.cartItemCount = cart.reduce((total: number, item: any) => total + item.quantity, 0);
   }
 
   logout(): void {

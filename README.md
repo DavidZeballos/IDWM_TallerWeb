@@ -1,59 +1,85 @@
-# IDWMTallerWeb
+# IDWM Store - Proyecto de Gestión de Usuarios y Productos
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.4.
+Este proyecto es una tienda online donde los usuarios pueden ver productos, agregarlos al carrito y proceder al checkout. Los administradores tienen permisos adicionales para gestionar productos y usuarios. El proyecto está diseñado usando Angular y utiliza un backend API en .NET.
 
-## Development server
+## Requerimientos
 
-To start a local development server, run:
+1. **Node.js** (preferiblemente la versión LTS).
+2. **Angular CLI** (instalado globalmente).
+3. **Backend API en .NET Core** con rutas y funcionalidades definidas.
+
+## Instalación
+
+### 1. Clonar el repositorio:
+
+```bash
+git clone https://github.com/DavidZeballos/IDWM_TallerWeb
+```
+
+### 2. Instalación de dependencias:
+
+Instala las dependencias de Angular usando npm:
+
+```bash
+npm install
+```
+
+### 3. Ejecutar la aplicación:
+
+Inicia la aplicación de desarrollo:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### 4. Configuración del Backend:
 
-## Code scaffolding
+Asegúrate de tener el backend en .NET Core configurado y ejecutándose en `http://localhost:5230`. Este backend maneja la autenticación, gestión de productos y usuarios, y el carrito de compras.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Estructura del Proyecto
 
-```bash
-ng generate component component-name
-```
+- `src/app/`: Contiene todos los componentes y servicios de la aplicación.
+- `src/assets/`: Carpeta para archivos estáticos como imágenes.
+- `src/environments/`: Configuración de entornos (desarrollo y producción).
+- `src/core/`: Servicios y utilidades globales (autenticación, almacenamiento local, etc.).
+- `src/features/`: Funcionalidades específicas (productos, usuarios, carrito).
+- `src/styles/`: Archivos de estilos globales.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Funcionalidades
 
-```bash
-ng generate --help
-```
+### 1. **Autenticación**
 
-## Building
+- **Login**: Los usuarios pueden iniciar sesión usando su correo y contraseña. El backend genera un token JWT para autenticación.
+- **Registro**: Los nuevos usuarios pueden registrarse con un nombre, correo, contraseña, etc.
+- **Cerrar sesión**: El token JWT se elimina y el usuario es redirigido al login.
 
-To build the project run:
+### 2. **Productos**
 
-```bash
-ng build
-```
+- Los productos se muestran en una lista, y los usuarios pueden filtrarlos o ordenarlos.
+- Los usuarios pueden agregar productos al carrito.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### 3. **Carrito**
 
-## Running unit tests
+- Los usuarios pueden agregar productos al carrito y realizar un checkout.
+- Los productos en el carrito se mantienen en `localStorage`.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### 4. **Gestión de Usuarios (Admin)**
 
-```bash
-ng test
-```
+- Los administradores pueden ver, editar y eliminar usuarios.
+- Los administradores pueden activar/desactivar el estado de los usuarios.
+- La vista de gestión de usuarios y productos está protegida por un guardia de administrador.
 
-## Running end-to-end tests
+### 5. **Gestión de Productos (Admin)**
 
-For end-to-end (e2e) testing, run:
+- Los administradores pueden añadir, editar y eliminar productos.
+- Pueden gestionar el inventario de productos, incluyendo la cantidad disponible.
 
-```bash
-ng e2e
-```
+## Paginación
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Se implementa la paginación en la lista de productos y usuarios para mejorar la navegación y la carga eficiente de datos.
 
-## Additional Resources
+## Notas
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Autenticación**: El backend maneja la creación, inicio de sesión y autorización de usuarios. Los tokens JWT se deben incluir en los encabezados de las solicitudes.
+- **Estado del carrito**: El carrito se guarda en `localStorage` y se actualiza cada vez que se añaden o eliminan productos.
+- **Responsive**: El diseño está adaptado para dispositivos móviles, tabletas y escritorios.

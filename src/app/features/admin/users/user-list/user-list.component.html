@@ -1,52 +1,57 @@
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-4 text-center">Gestión de Usuarios</h1>
-    <table class="table-auto w-full bg-white shadow-md rounded-lg">
-      <thead>
-        <tr>
-          <th class="px-4 py-2">Nombre</th>
-          <th class="px-4 py-2">Correo</th>
-          <th class="px-4 py-2">Estado</th>
-          <th class="px-4 py-2">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of users">
-          <td class="border px-4 py-2">{{ user.userName }}</td>
-          <td class="border px-4 py-2">{{ user.email }}</td>
-          <td class="border px-4 py-2">
-            <span
-              [ngClass]="{
-                'text-green-600': user.status,
-                'text-red-600': !user.status
-              }"
-            >
-              {{ user.status ? 'Activo' : 'Inactivo' }}
-            </span>
-          </td>
-          <td class="border px-4 py-2 flex space-x-2">
-            <button
-              class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-              (click)="editUser(user.id)"
-            >
-              Editar
-            </button>
-            <button
-              class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-              (click)="toggleStatus(user.id)"
-            >
-              {{ user.status ? 'Desactivar' : 'Activar' }}
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="mt-4 text-center">
-      <button
-        class="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600"
-        (click)="navigateToCreateUser()"
-      >
-        Crear Nuevo Usuario
-      </button>
-    </div>
+  <h1 class="text-2xl font-bold mb-4 text-center">Gestión de Usuarios</h1>
+  <table class="table-auto w-full bg-white shadow-md rounded-lg">
+    <thead>
+      <tr>
+        <th class="px-4 py-2">Nombre</th>
+        <th class="px-4 py-2">Correo</th>
+        <th class="px-4 py-2">Estado</th>
+        <th class="px-4 py-2">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of paginatedUsers">
+        <td class="border px-4 py-2">{{ user.userName }}</td>
+        <td class="border px-4 py-2">{{ user.email }}</td>
+        <td class="border px-4 py-2">
+          <span
+            [ngClass]="{
+              'text-green-600': user.status,
+              'text-red-600': !user.status
+            }"
+          >
+            {{ user.status ? 'Activo' : 'Inactivo' }}
+          </span>
+        </td>
+        <td class="border px-4 py-2 flex space-x-2">
+          <button
+            *ngIf="user.role !== 'Admin'"
+            class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+            (click)="toggleStatus(user.id)"
+          >
+            {{ user.status ? 'Desactivar' : 'Activar' }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div class="mt-4 flex justify-between items-center">
+    <button
+      (click)="changePage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+    >
+      Anterior
+    </button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button
+      (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+      class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+    >
+      Siguiente
+    </button>
   </div>
-  
+</div>
