@@ -6,7 +6,10 @@ Este proyecto es una tienda online donde los usuarios pueden ver productos, agre
 
 1. **Node.js** (preferiblemente la versión LTS).
 2. **Angular CLI** (instalado globalmente).
-3. **Backend API en .NET Core** con rutas y funcionalidades definidas.
+3. **Backend API en .NET Core** con rutas y funcionalidades definidas:
+```bash
+https://github.com/DavidZeballos/IDWM_Taller1
+```
 
 ## Instalación
 
