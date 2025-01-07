@@ -1,0 +1,57 @@
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold mb-4 text-center">Gestión de Productos</h1>
+
+  <!-- Barra de búsqueda -->
+  <div class="flex justify-between items-center mb-4">
+    <input
+      type="text"
+      class="w-full max-w-sm px-4 py-2 rounded-md border border-gray-300 focus:ring focus:ring-teal-200 focus:outline-none"
+      placeholder="Buscar productos..."
+      [(ngModel)]="searchTerm"
+      (input)="fetchProducts()"
+    />
+    <button
+      class="ml-4 px-4 py-2 bg-teal-500 text-white font-semibold rounded-md hover:bg-teal-600 transition"
+      routerLink="/admin/products/create"
+    >
+      + Crear Producto
+    </button>
+  </div>
+
+  <!-- Tabla de productos -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Nombre</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Precio</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Stock</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Tipo</th>
+          <th class="px-4 py-2 text-center text-sm font-medium text-gray-600">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products" class="hover:bg-gray-50 transition">
+          <td class="px-4 py-2 text-sm text-gray-700">{{ product.name }}</td>
+          <td class="px-4 py-2 text-sm text-gray-700">{{ product.price | currency }}</td>
+          <td class="px-4 py-2 text-sm text-gray-700">{{ product.inStock }}</td>
+          <td class="px-4 py-2 text-sm text-gray-700">{{ product.productTypeName }}</td>
+          <td class="px-4 py-2 text-center space-x-2">
+            <button
+              class="px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition"
+              [routerLink]="['/admin/products/edit', product.id]"
+            >
+              Editar
+            </button>
+            <button
+              class="px-3 py-1 bg-red-500 text-white text-sm rounded-md hover:bg-red-600 transition"
+              (click)="deleteProduct(product.id)"
+            >
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

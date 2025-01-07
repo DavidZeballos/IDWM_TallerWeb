@@ -1,0 +1,56 @@
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold mb-4 text-center">Crear Producto</h1>
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="space-y-4 max-w-lg mx-auto">
+    <div>
+      <label class="block text-sm font-medium mb-2">Nombre</label>
+      <input
+        type="text"
+        formControlName="name"
+        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-teal-200 focus:outline-none"
+        placeholder="Nombre del producto"
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">Precio</label>
+      <input
+        type="number"
+        formControlName="price"
+        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-teal-200 focus:outline-none"
+        placeholder="Precio del producto"
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">Cantidad en Stock</label>
+      <input
+        type="number"
+        formControlName="inStock"
+        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-teal-200 focus:outline-none"
+        placeholder="Stock disponible"
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">URL de la Imagen</label>
+      <input
+        type="text"
+        formControlName="imageURL"
+        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-teal-200 focus:outline-none"
+        placeholder="URL de la imagen del producto"
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">Tipo de Producto</label>
+      <input
+        type="text"
+        formControlName="productTypeName"
+        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-teal-200 focus:outline-none"
+        placeholder="Categoría del producto"
+      />
+    </div>
+    <button
+      type="submit"
+      class="w-full px-4 py-2 bg-teal-500 text-white font-semibold rounded-md hover:bg-teal-600 transition"
+    >
+      Guardar Producto
+    </button>
+  </form>
+</div>

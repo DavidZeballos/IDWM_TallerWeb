@@ -1,0 +1,75 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">Lista de Productos</h1>
+
+  <!-- Búsqueda -->
+  <input
+    type="text"
+    [(ngModel)]="searchTerm"
+    (input)="applyFilters()"
+    placeholder="Buscar productos..."
+    class="border p-2 rounded-md mb-4 w-full"
+  />
+
+  <!-- Ordenar -->
+  <select
+    [(ngModel)]="sortOrder"
+    (change)="applyFilters()"
+    class="border p-2 rounded-md mb-4"
+  >
+    <option value="" [disabled]="sortOrder !== ''">Ordenar por</option>
+    <option value="asc">Precio Ascendente</option>
+    <option value="desc">Precio Descendente</option>
+  </select>
+
+  <!-- Lista de Productos -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div *ngFor="let product of filteredProducts" class="border p-4 rounded-md">
+      <img
+        [src]="product.imageURL"
+        alt="{{ product.name }}"
+        class="mb-2 w-full h-40 object-cover rounded-md"
+      />
+      <h2 class="text-lg font-semibold truncate">{{ product.name }}</h2>
+      <p class="text-gray-600">{{ product.productTypeName  }}</p>
+      <p class="font-bold text-green-500">{{ product.price | currency:'USD' }}</p>
+      <button
+        (click)="addToCart(product)"
+        class="mt-2 bg-blue-500 text-white p-2 rounded-md"
+      >
+        Agregar al Carrito
+      </button>
+    </div>
+  </div>
+  
+
+  <!-- Paginación -->
+  <div class="mt-4 flex justify-between items-center">
+    <button
+      (click)="changePage(page - 1)"
+      [disabled]="page === 1"
+      class="bg-gray-300 text-gray-700 p-2 rounded-md"
+    >
+      Anterior
+    </button>
+    <p>
+      Página {{ page }} de {{ Math.ceil(products.length / pageSize) }}
+    </p>
+    <button
+      (click)="changePage(page + 1)"
+      [disabled]="page >= Math.ceil(products.length / pageSize)"
+      class="bg-gray-300 text-gray-700 p-2 rounded-md"
+    >
+      Siguiente
+    </button>
+  </div>
+
+  <!-- Cambiar Tamaño de Página -->
+  <select
+    (change)="changePageSize($event)"
+    class="border p-2 rounded-md mt-4"
+  >
+    <option value="4">4 por página</option>
+    <option value="8" selected>8 por página</option>
+    <option value="12">12 por página</option>
+  </select>
+</div>
